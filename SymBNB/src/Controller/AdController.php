@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Form\AdType;
+use App\Entity\Image;
 use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,7 @@ class AdController extends AbstractController
         //Création formulaire
         $ad = new Ad();
 
+    
         $form = $this->createForm(AdType::class, $ad);
 
         //Envoyez les champs du formulaires et les enregistrer

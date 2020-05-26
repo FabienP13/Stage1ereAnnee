@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Ad;
+use App\Form\ImageType;
 use Symfony\Component\Form\AbstractType;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class AdType extends AbstractType
 {
@@ -43,6 +45,12 @@ class AdType extends AbstractType
             ->add('content', TextareaType::class, $this->getConfiguration("Description détaillée", "Tapez une description qui donne vriament envie de venir chez vous"))
             ->add('rooms', IntegerType::class, $this->getConfiguration("Nombre de chambre", "Nombre de chambes disponibles"))
             ->add('price', MoneyType::class, $this->getConfiguration("Prix par nuit", " Indiquez le prix que vous voulez pour une nuit"))
+            ->add('images', CollectionType::class, 
+                [
+                'entry_type' => ImageType::class,
+                'allow_add' => true
+                ]
+            )
             ->add('save', SubmitType::class, [
                 'label' => 'Créer la nouvelle annonce',
                 'attr' => [
