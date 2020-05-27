@@ -50,6 +50,10 @@ class AdController extends AbstractController
 
         
         if($form->isSubmitted() && $form->isValid()){
+            foreach($ad->getImages() as $image){
+                $image->setAd($ad);
+                $manager->persist($image);
+            }
             
             $manager->persist($ad);
             $manager->flush();
@@ -71,6 +75,51 @@ class AdController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * Permet d'afficher le form d'édition
+     *
+     * @Route("/ads/{slug}/edit", name="ads_edit")
+     * 
+     * @return Response
+     */
+    public function edit(Ad $ad, Request $request, EntityManagerInterface $manager){
+        $form = $this->createForm(AdType::class, $ad);
+
+           //Envoyez les champs du formulaires et les enregistrer
+           $form->handleRequest($request);
+
+        
+           if($form->isSubmitted() && $form->isValid()){
+               foreach($ad->getImages() as $image){
+                   $image->setAd($ad);
+                   $manager->persist($image);
+               }
+               
+               $manager->persist($ad);
+               $manager->flush();
+               
+               
+               //Création flash 
+               $this->addFlash(
+                   'success',
+                   "Les modifications de l'annonce <strong> {$ad->getTitle()}</strong> ont bien été enregistrées !"
+               );
+   
+               //rediriger vers la page de l'annonce
+               return $this->redirectToRoute('ads_show', [
+                   'slug' => $ad->getSlug()
+               ]);
+               }
+
+        return $this->render('ad/edit.html.twig', [
+            'form' => $form->createView(),
+            'ad' => $ad
+        ]);
+
+    }
+
+
 
     /**
      * Permet d'afficher une seule annonce 

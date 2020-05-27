@@ -23,15 +23,16 @@ class AdType extends AbstractType
      *
      * @param [string] $label
      * @param [string] $placeholder
+     * @param array $options 
      * @return array
      */
-    private function getConfiguration($label, $placeholder){
-        return [
+    private function getConfiguration($label, $placeholder, $options = []){
+        return array_merge([
             'label' => $label, 
             'attr' => [
                 'placeholder' => $placeholder
             ]
-        ];
+        ], $options);
         
     }
 
@@ -39,7 +40,10 @@ class AdType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, $this->getConfiguration("Titre", "Tapez un super titre pour votre annonce"))
-            ->add('slug', TextType::class, $this->getConfiguration("Adresse web", "Tapez l'adresse web (Automatique)"))
+            ->add('slug', TextType::class, $this->getConfiguration("Adresse web", "Tapez l'adresse web (Automatique)", [
+                'required' => false
+                ])
+            )
             ->add('coverImage', UrlType::class, $this->getConfiguration("URL de l'image", "Donnez l'adresse d'une image qui donne envie"))
             ->add('introduction', TextType::class, $this->getConfiguration("Introduction", "Donnez une description globale"))
             ->add('content', TextareaType::class, $this->getConfiguration("Description détaillée", "Tapez une description qui donne vriament envie de venir chez vous"))
@@ -48,15 +52,11 @@ class AdType extends AbstractType
             ->add('images', CollectionType::class, 
                 [
                 'entry_type' => ImageType::class,
-                'allow_add' => true
+                'allow_add' => true,
+                'allow_delete' => true
                 ]
-            )
-            ->add('save', SubmitType::class, [
-                'label' => 'Créer la nouvelle annonce',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ]);
+                );
+            
     }
 
     public function configureOptions(OptionsResolver $resolver)

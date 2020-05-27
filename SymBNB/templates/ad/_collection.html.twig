@@ -1,0 +1,41 @@
+{# Personnaliser le sous-formulaire d'ajout d'images #}
+
+{# _ad_images car images est le nom du champ qu'on a créé dans AdType #}
+
+{% block _ad_images_widget %} 
+    <p>Ici vous pouvez ajouter vos propres images</p>
+
+    {{ form_widget(form) }} {# form ne représente pas le form dans son intégralité (=ici représente le champ ad_images) #}
+
+    <input type="hidden" id="widgets-counter" value="0">
+
+    <div class="form-group">
+        <button type="button" id="add-image" class="btn btn-success"> Ajouter une image</button>
+    </div>
+{% endblock %}
+
+{% block _ad_images_entry_row %} {# redéfinir la row qui contient label, erreur, widget et les aides #}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _ad_images_entry_widget %} {# Affichage des entrées du sous-formalaire 'images'#}
+<div class="form-group" id="block_{{id}}">
+    <div class="row">
+        <div class="col-10">
+        
+            <div class="row">   
+                <div class="col">
+                    {{ form_widget(form.url) }}
+                </div>
+                <div class="col">
+                    {{ form_widget(form.caption) }}
+
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
