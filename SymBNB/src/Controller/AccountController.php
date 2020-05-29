@@ -123,9 +123,11 @@ class AccountController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             //Vérifier que le oldpassword du formulaire soit le même que le password de l'user
-            if(!password_verify($passwordUpdate->getOldPassword(),$user->getHash())){
+             if(!password_verify($passwordUpdate->getOldPassword(),$user->getHash())){
+
                 //Gérer l'erreur
                 //Avoir accès au champ oldPassword grâce à la classe Error
+                
                 $form->get('oldPassword') ->addError(new FormError("Le mot de passe n'est pas le mot de passe actuel")); 
             } else {
                 $newPassword = $passwordUpdate->getNewPassword();
@@ -144,8 +146,6 @@ class AccountController extends AbstractController
                 return $this->redirectToRoute('homepage');
 
             }
-
-            password_verify('password','$2y$13$/Q2l/sTkYS1HL8kiuIeLAOvdVGvyZPbeOckdWRH.kJuqaKXhzHwq');
 
         }
 
@@ -167,4 +167,16 @@ class AccountController extends AbstractController
             'user' => $this->getUser()
         ]);
     }
+
+    /**
+     * permet d'afficher liste des réservations faite par l'utilisateur
+     *
+     * @Route("/account/bookings", name="account_bookings")
+     * 
+     * @return Response
+     */
+    public function bookings(){
+        return $this->render('account/bookings.html.twig');
+    }
+
 }
